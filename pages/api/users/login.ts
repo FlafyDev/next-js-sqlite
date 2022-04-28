@@ -2,8 +2,6 @@ import { getUsers } from "../../../lib/db";
 import { validatePassword, validateUsername } from "../../../lib/validateUser";
 import { withSessionRoute } from "../../../lib/withSession";
 
-const registrationKeys = ["username", "password", "email"];
-
 export default withSessionRoute(async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).send("");
@@ -26,7 +24,7 @@ export default withSessionRoute(async (req, res) => {
     return;
   }
 
-  req.session.username = user!.username;
+  req.session.id = user!.id;
   await req.session.save();
   res.status(200).send("");
 });

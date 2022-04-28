@@ -9,7 +9,7 @@ import {
 
 declare module "iron-session" {
   interface IronSessionData {
-    username?: string;
+    id?: number;
   }
 }
 

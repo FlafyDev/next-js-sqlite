@@ -19,6 +19,7 @@ export const initializeTables = async () => {
       table.string("username");
       table.string("password");
       table.string("email");
+      table.boolean("isAdmin").defaultTo(false);
     });
   }
 };

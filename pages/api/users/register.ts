@@ -1,4 +1,4 @@
-import { getUsers } from "../../../lib/db";
+import { getUsers, initializeTables } from "../../../lib/db";
 import { withSessionRoute } from "../../../lib/withSession";
 import _ from "lodash-es";
 import validateUser, { ValidationResult } from "../../../lib/validateUser";
@@ -18,6 +18,7 @@ export default withSessionRoute(async (req, res) => {
     if (validationResult === ValidationResult.None) {
       await getUsers().insert({
         ...req.body,
+        isAdmin: false,
       });
       res.status(200);
     } else {
