@@ -1,0 +1,23 @@
+.background {
+	position: absolute;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+  z-index: -100;
+}
+
+.backgroundManipulator {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -99;
+  opacity: 0;
+  animation: backAnim 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes backAnim {
+  100% {
+    opacity: 1;
+  }
+}

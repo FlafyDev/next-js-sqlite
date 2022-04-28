@@ -1,7 +1,9 @@
-export default interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  isAdmin: boolean;
+export default class User {
+  constructor(
+    public id: number,
+    public username: string,
+    public password: string,
+    public email: string,
+    public isAdmin: boolean
+  ) {}
 }

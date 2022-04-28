@@ -1,17 +1,14 @@
 import React from "react";
 import styles from "./StyledInput.module.css";
-import {
-  FontAwesomeIcon,
-  FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const StyledInput: React.FC<{
   visible: boolean;
   placeholder: string;
-  inputProps: React.InputHTMLAttributes<HTMLInputElement>;
-  type: "string" | "number";
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  type: React.HTMLInputTypeAttribute;
   state: [any, (newValue: any) => void];
-  icon: FontAwesomeIconProps;
+  icon: any;
 }> = (props) => {
   return (
     <div hidden={!props.visible} className={styles.container}>

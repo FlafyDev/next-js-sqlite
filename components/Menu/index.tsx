@@ -8,30 +8,22 @@ const Menu: React.FC = (props) => {
 
   const logout = async () => {
     await fetch("api/Users/Logout");
-    logged.requestLoggedInfo();
+    logged.requestCurrentUser();
   };
-
-  const menuItems = [
-    { text: "Home", link: "/" },
-    logged.info.username
-      ? { text: "Logout", action: logout }
-      : { text: "Login", link: "/login" },
-    !logged.info.isAdmin || { text: "User Manager", link: "/userManager" },
-  ];
 
   return (
     <div className={styles.menu}>
       <MenuItem text={"Home"} link={"/"} />
-      {logged.info.username ? (
+      {logged.user ? (
         <MenuItem text={"Logout"} action={logout} />
       ) : (
         <MenuItem text={"Login"} link={"/login"} />
       )}
-      {!logged.info.isAdmin || (
+      {!logged.user?.isAdmin || (
         <MenuItem text={"User Manager"} link={"/userManager"} />
       )}
       <div className={styles.menuText}>
-        {!logged.info.username || `Hello ${logged.info.username}!`}
+        {!logged.user || `Hello ${logged.user.username}!`}
       </div>
     </div>
   );

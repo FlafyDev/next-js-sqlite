@@ -20,7 +20,7 @@ export default withSessionRoute(async (req, res) => {
   const user = await getUsers().where("username", req.body.username).first();
 
   if (user?.password !== req.body.password) {
-    res.status(400).send("Incorrect username or password");
+    res.status(403).send("Wrong username or password");
     return;
   }
 

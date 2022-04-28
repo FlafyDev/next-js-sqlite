@@ -52,7 +52,7 @@ const UserCard: React.FC<{
             type={"number"}
           />
           <Field
-            displayName={"Boxing Points"}
+            displayName={"Points"}
             state={[user, setUser]}
             type={"number"}
           />
