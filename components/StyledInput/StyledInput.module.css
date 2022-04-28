@@ -1,0 +1,66 @@
+
+.container {
+  width: 100%;
+  font-size: 20px;
+  color: gray;
+  height: 60px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0;
+  position: relative;
+  transition: height 0.2s ease-in-out, 
+    margin 0.2s ease-in-out;
+}
+
+.container[hidden] {
+  visibility: hidden;
+  margin: 0;
+  height: 0;
+}
+
+.input {
+  flex: 1;
+  position: relative;
+  border: solid 1px rgb(23, 98, 36);
+  border-radius: 5px;
+  outline: none;
+  height: 100%;
+  font-size: 16px;
+  width: 100%;
+  padding: 0 10px;
+  transition: box-shadow 0.1s ease-in-out, top 0.1s ease-in-out, background-color 0.2s ease-in-out;
+  box-shadow: 0;
+  top: 0;
+  padding-left: 50px;
+  background-color: rgba(131, 109, 255, 0.1);
+  color: black;
+  font-size: 16px;
+}
+
+.input:focus {
+  background-color: rgba(131, 109, 255, 0.205);
+}
+
+.input::placeholder {
+  color: rgb(59, 59, 59);
+}
+
+.svgContainer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 55px;
+  color: black;
+}
+
+.svgContainer > svg {
+  transition: height 0.1s ease-in-out;
+  height: 20px;
+}
+
+.container[hidden] .svgContainer > svg {
+  height: 0px;
+}

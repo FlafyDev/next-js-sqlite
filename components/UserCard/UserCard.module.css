@@ -1,0 +1,145 @@
+.container {
+  background-color: rgba(126, 170, 211, 0.685);
+  backdrop-filter: blur(2px);
+  border-radius: 10px;
+  
+  transition: 
+    height 0.4s,
+    opacity 0.4s,
+    padding 0.4s,
+    margin 0.4s
+  ;
+
+  animation: start 0.4s;
+  animation-fill-mode: forwards;
+
+  height: 150px;
+  opacity: 1;
+  padding: 10px;
+  margin: 10px 0;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.container[hidden] {
+  animation: end 0.4s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes start {
+  0% {
+    height: 0;
+    opacity: 0;
+    padding: 0 10px;
+    margin: 0;
+  }
+  100% {
+    height: 150px;
+    opacity: 1;
+    padding: 10px;
+    margin: 10px 0;
+  }
+}
+
+@keyframes end {
+  100% {
+    height: 0;
+    opacity: 0;
+    padding: 0 10px;
+    margin: 0;
+  }
+  0% {
+    height: 150px;
+    opacity: 1;
+    padding: 10px;
+    margin: 10px 0;
+  }
+}
+
+.deleteButton {
+  display: flex;
+  justify-content: center;
+  border-radius: 10px;
+  align-items: center;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.deleteButton:hover {
+  background-color: rgba(121, 0, 0, 0.096);
+  color: rgb(199, 0, 0);
+  cursor: pointer;
+}
+
+.gridContainer {
+
+  display: grid;
+  grid-template-columns: repeat(3, calc(100% / 3) [col-start]);
+  width: 100%;
+  height: 100%;
+}
+
+.field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 5px 5px 10px;
+  background-color:rgb(147, 179, 216);
+  margin: 5px;
+  border-radius: 10px;
+  height: 30px;
+}
+
+.field > div {
+  width: 100px;
+  flex: 1;
+}
+
+.field .name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.field .value {
+  background: rgba(255, 255, 255, 0.2);
+  height: 100%;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  width: 50%;
+  padding: 0 4px;
+}
+
+.popupContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.popupTitle {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.sureDeleteButton {
+  outline-width: 2px;
+  outline-color: rgba(255, 0, 0, 0.582);
+  outline-style: solid;
+  color: black;
+  border: none;
+  transition: background-color 0.3s;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 10px 40px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.sureDeleteButton:hover {
+  background-color: rgba(255, 0, 0, 0.568);
+}

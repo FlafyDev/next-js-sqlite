@@ -1,0 +1,22 @@
+.container {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  z-index: 2001;
+  min-width: 100px;
+  min-height: 75px;
+  backdrop-filter: blur(15px);
+  outline: solid 2px rgba(0, 0, 0, 0.507);
+  padding: 20px;
+  border-radius: 5px;
+}

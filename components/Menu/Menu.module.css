@@ -1,0 +1,30 @@
+﻿.menu {
+	background-color: black;
+	width: 100%;
+	display: flex;
+	justify-content: left;
+	flex-direction: row;
+	position: fixed;
+	z-index: 100;
+}
+
+.menuText {
+	color: white;
+	margin: 5px 10px 5px auto;
+	padding: 15px;
+}
+
+.menuItem {
+	text-align: center;
+	color: white;
+	padding: 15px;
+	background-color: transparent;
+	cursor: pointer;
+	margin: 5px 10px;
+	width: 100px;
+	border-radius: 5px;
+}
+
+.menuItem:hover {
+	background-color: rgb(255, 255, 255, 0.2);
+}

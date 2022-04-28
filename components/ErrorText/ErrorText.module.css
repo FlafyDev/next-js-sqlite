@@ -1,0 +1,21 @@
+
+.errorText {
+  transition: height 0.4s;
+}
+
+.errorText:empty {
+  height: 0px;
+}
+
+.errorText {
+  display: flex;
+  font-weight: bold;
+  color: rgb(182, 12, 12);
+  margin-top: 20px;
+  letter-spacing: 2px;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  height: 33px;
+}
+
