@@ -1,5 +1,3 @@
-// lib/withSession.ts
-
 import { withIronSessionApiRoute, withIronSessionSsr } from "iron-session/next";
 import {
   GetServerSidePropsContext,

@@ -4,6 +4,7 @@ export default class User {
     public username: string,
     public password: string,
     public email: string,
+    public points: number,
     public isAdmin: boolean
   ) {}
 }

@@ -25,16 +25,18 @@
 .topButtonsContainer {
 	display: flex;
 	justify-content: center;
-	width: 80%;
+	width: 100%;
 }
 
 .topButtonsContainer > div {
 	width: 100%;
 	display: flex;
-	justify-content: center;
+	justify-content: space-evenly;
 }
 
 .topButtonsContainer button {
+	max-width: 200px;
+	width: 80%;
 	position: relative;
 	border-radius: 10px;
 	border: none;
@@ -42,7 +44,6 @@
 	font-weight: bolder;
 	font-size: 20px;
 	text-align: center;
-	width: 200px;
 	font-weight: 400;
 	height: 60px;
 	filter: drop-shadow(0 0 6px black);

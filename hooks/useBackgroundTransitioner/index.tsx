@@ -28,9 +28,9 @@ const useBackgroundTransitioner = (defaultBackground: string) => {
   // This is leaking but cutting the array doesn't do good for the css animations.
   // Ended up leaving the backgrounds in the string array but not render them.
   const addBackground: AddBackground = (background) => {
-    const startIndex = backgrounds.length - 5;
+    // const startIndex = backgrounds.length - 5;
     const newBackgroundsArray = [...backgrounds, background]; // [...(backgrounds.slice(startIndex >= 0 ? startIndex : 0, backgrounds.length)), background];
-    console.log(newBackgroundsArray);
+    console.log(newBackgroundsArray.length);
     setBackgrounds(newBackgroundsArray);
   };
 

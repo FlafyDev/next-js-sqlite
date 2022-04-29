@@ -22,8 +22,11 @@ const Menu: React.FC = (props) => {
       {!logged.user?.isAdmin || (
         <MenuItem text={"User Manager"} link={"/userManager"} />
       )}
-      <div className={styles.menuText}>
+      <div className={[styles.menuItem, styles.menuWelcomeText].join(' ')}>
         {!logged.user || `Hello ${logged.user.username}!`}
+      </div>
+      <div className={styles.background}>
+        
       </div>
     </div>
   );
@@ -34,11 +37,11 @@ const MenuItem: React.FC<{ text: string; link?: string; action?: Function }> = (
 ) => {
   return props.link ? (
     <Link href={props.link} passHref>
-      <div className={styles.menuItem}>{props.text}</div>
+      <div className={styles.menuItem}><p>{props.text}</p></div>
     </Link>
   ) : props.action ? (
     <div className={styles.menuItem} onClick={() => props.action!()}>
-      {props.text}
+      <p>{props.text}</p>
     </div>
   ) : (
     <></>

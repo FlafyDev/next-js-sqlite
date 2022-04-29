@@ -1,8 +1,6 @@
 import { getUsers } from "../../../lib/db";
 import { withSessionRoute } from "../../../lib/withSession";
 
-const modifiableProperties = ["username", "password", "email", "isAdmin"];
-
 export default withSessionRoute(async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).send("");
