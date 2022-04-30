@@ -1,68 +1,73 @@
 ﻿.topSection {
-	display: flex;
-	align-items: center;
-	height: 250px;
-	width: 100%;
-	flex-direction: column;
+  display: flex;
+  align-items: center;
+  height: 250px;
+  width: 100%;
+  flex-direction: column;
 }
 
 .title {
-	position: relative;
-	font-size: 120px;
-	font-family: 'Quartzo';
-	font-weight: bold;
-	background: linear-gradient(0deg,  rgba(186, 212, 219,1) 0%, rgba(255, 97, 49) 50%, rgba(171,70,252,1) 100%);
-	background-clip: text;
-	color: transparent;
-	-webkit-text-stroke: black 10px;
-	margin-bottom: 20px;
+  position: relative;
+  font-size: 120px;
+  font-family: "Quartzo";
+  font-weight: bold;
+  background: linear-gradient(
+    0deg,
+    rgba(186, 212, 219, 1) 0%,
+    rgba(255, 97, 49) 50%,
+    rgba(171, 70, 252, 1) 100%
+  );
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: black 10px;
+  margin-bottom: 20px;
 }
 
 .imgTitleContainer {
-	margin: 10px;
+  margin: 10px;
 }
 
 .topButtonsContainer {
-	display: flex;
-	justify-content: center;
-	width: 100%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .topButtonsContainer > div {
-	width: 100%;
-	display: flex;
-	justify-content: space-evenly;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .topButtonsContainer button {
-	max-width: 200px;
-	width: 80%;
-	position: relative;
-	border-radius: 10px;
-	border: none;
-	outline: none;
-	font-weight: bolder;
-	font-size: 20px;
-	text-align: center;
-	font-weight: 400;
-	height: 60px;
-	filter: drop-shadow(0 0 6px black);
-	color: black;
-	top: 0;
-	cursor: pointer;
+  max-width: 200px;
+  width: 80%;
+  position: relative;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-weight: bolder;
+  font-size: 20px;
+  text-align: center;
+  font-weight: 400;
+  height: 60px;
+  filter: drop-shadow(0 0 6px black);
+  color: black;
+  top: 0;
+  cursor: pointer;
 }
 
 .topButtonsContainer button.important {
-	filter: drop-shadow(0 0 6px black);
-	color: white;
-	font-weight: bold;
-	background-color: rgb(98, 183, 255);
+  filter: drop-shadow(0 0 6px black);
+  color: white;
+  font-weight: bold;
+  background-color: rgb(98, 183, 255);
 }
 
 .topButtonsContainer button:active {
-	background-color: rgb(230 230 230);
+  background-color: rgb(230 230 230);
 }
 
 .topButtonsContainer button.important:active {
-	background-color: rgb(83, 168, 239);
+  background-color: rgb(83, 168, 239);
 }

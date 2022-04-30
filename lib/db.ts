@@ -1,4 +1,5 @@
 import { Knex, knex } from "knex";
+import Article from "../models/article";
 import User from "../models/user";
 
 export const db = knex({
@@ -9,7 +10,8 @@ export const db = knex({
 });
 
 export const getUsers = (): Knex.QueryBuilder<User, User[]> => db("users");
-export const getArticles = (): Knex.QueryBuilder<User, User[]> => db("articles");
+export const getArticles = (): Knex.QueryBuilder<Article, Article[]> =>
+  db("articles");
 
 export const initializeTables = async () => {
   if (!(await db.schema.hasTable("users"))) {
@@ -20,7 +22,7 @@ export const initializeTables = async () => {
       table.string("username").notNullable();
       table.string("password").notNullable();
       table.string("email").notNullable();
-      table.integer("points").notNullable();
+      table.integer("points").defaultTo(100);
       table.boolean("isAdmin").defaultTo(false);
     });
   }
@@ -33,7 +35,7 @@ export const initializeTables = async () => {
       table.string("title").notNullable();
       table.string("content").notNullable();
       table.string("likedBy").defaultTo("[]"); // JSON.stringify
-      table.boolean("isAdmin").defaultTo(false);
+      table.integer("lastUpdated").notNullable();
     });
   }
 };

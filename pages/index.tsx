@@ -3,16 +3,21 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { AddBackground } from "../hooks/useBackgroundTransitioner";
-import { GetServerSideProps } from "next";
 import User from "../models/user";
-import { withSessionRoute, withSessionSsr } from "../lib/withSession";
+import { genSSP, PageProps } from "../lib/genSSP";
 
-const Home: React.FC<{ addBackground: AddBackground, user: User }> = (props) => {
-  useEffect(() =>
-    props.addBackground(
-      `linear-gradient(135deg, rgb(163, 185, 255) 0%, rgba(29, 185, 181, 1) 41%, rgb(49, 147, 142) 100%)`
-    )
-  , []);
+const Home: React.FC<{ addBackground: AddBackground; user: User }> = (
+  props
+) => {
+  useEffect(
+    () =>
+      props.addBackground(
+        `linear-gradient(135deg, rgb(163, 185, 255) 0%, rgba(29, 185, 181, 1) 41%, rgb(49, 147, 142) 100%)`
+      ),
+    []
+  );
+
+  console.log(props.user);
 
   return (
     <div>
@@ -29,9 +34,11 @@ const Home: React.FC<{ addBackground: AddBackground, user: User }> = (props) => 
   );
 };
 
-const TopButton: React.FC<{ text: string; link: string; important: boolean }> = (
-  props
-) => {
+const TopButton: React.FC<{
+  text: string;
+  link: string;
+  important: boolean;
+}> = (props) => {
   return (
     <Link href={props.link} passHref>
       <div>
@@ -43,12 +50,5 @@ const TopButton: React.FC<{ text: string; link: string; important: boolean }> = 
   );
 };
 
-export const getServerSideProps = withSessionSsr(async ({req, res}) => {
-  return {
-    props: {
-      user: await getUsers().where("id", req.session.id).first(),
-    }
-  };
-});
-
+export const getServerSideProps = genSSP();
 export default Home;

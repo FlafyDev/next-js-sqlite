@@ -6,9 +6,9 @@ import styles from "../styles/Login.module.css";
 import StyledInput from "../components/StyledInput";
 import { faUser, faKey, faAt, faCake } from "@fortawesome/free-solid-svg-icons";
 import ProgressBar from "../components/ProgressBar";
-import { LoggedContext } from "../context/loggedContext";
 import { AddBackground } from "../hooks/useBackgroundTransitioner";
 import { apiLogin } from "../lib/apiCommunicator";
+import { genSSP, PageProps } from "../lib/genSSP";
 
 const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -23,7 +23,6 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const logged = useContext(LoggedContext);
 
   const genderNames = ["Male", "Female", "Other"];
   const maxRegisterStages = 2; // zero-index
@@ -78,7 +77,8 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
         setError("Wrong username or password");
         break;
       case 200:
-        logged.requestCurrentUser();
+        // logged.requestCurrentUser();
+        router.replace(router.asPath);
         router.push("/");
         break;
       default: {
@@ -259,4 +259,5 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
   );
 };
 
+export const getServerSideProps = genSSP();
 export default Login;

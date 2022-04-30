@@ -38,12 +38,12 @@ export const apiLogin = async (username: string, password: string) => {
   return res.status;
 };
 
-export const apiLogout = async (username: string, password: string) => {
+export const apiLogout = async () => {
   const res = await fetch("/api/users/logout", {
     method: "POST",
   });
 
-  return await resultToString(res);
+  return res.status;
 };
 
 export const apiEdit = async (
