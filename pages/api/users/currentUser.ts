@@ -10,6 +10,6 @@ export default withSessionRoute(async (req, res) => {
   if (user) {
     res.status(200).json(user);
   } else {
-    res.status(400).send("Couldn't fine user with that id");
+    res.status(400).send("Couldn't find user with that id");
   }
 });

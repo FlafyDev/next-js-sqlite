@@ -1,8 +1,12 @@
+html {
+  zoom: 2;
+}
+
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Fira Sans";
   padding: 0;
   margin: 0;
-  overflow: none;
+  overflow: hidden;
 }
 
 @font-face {

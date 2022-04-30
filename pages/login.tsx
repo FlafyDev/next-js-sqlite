@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ErrorText from "../components/ErrorText";
 import styles from "../styles/Login.module.css";
-import StyledInput from "../components/StyledInput";
+import StyledInput, { StyledInputConfig } from "../components/StyledInput";
 import { faUser, faKey, faAt, faCake } from "@fortawesome/free-solid-svg-icons";
 import ProgressBar from "../components/ProgressBar";
 import { AddBackground } from "../hooks/useBackgroundTransitioner";
@@ -78,8 +78,7 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
         break;
       case 200:
         // logged.requestCurrentUser();
-        router.replace(router.asPath);
-        router.push("/");
+        router.replace("/");
         break;
       default: {
         setError(`${status} error.`);
@@ -163,25 +162,19 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
         {/* Register Stage 0 */}
         <StyledInput
           visible={registerStage === 0}
-          type="text"
-          placeholder={"Username"}
-          icon={faUser}
+          config={new StyledInputConfig.Input("text", "Username", faUser)}
           state={[username, setUsername]}
         />
 
         <StyledInput
           visible={isRegistering && registerStage === 0}
-          type="text"
-          placeholder={"Email"}
-          icon={faAt}
+          config={new StyledInputConfig.Input("text", "Email", faAt)}
           state={[email, setEmail]}
         />
 
         <StyledInput
           visible={registerStage === 0}
-          type="password"
-          placeholder={"Password"}
-          icon={faKey}
+          config={new StyledInputConfig.Input("password", "Password", faKey)}
           state={[password, setPassword]}
         />
 
@@ -189,28 +182,27 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
         <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
           <StyledInput
             visible={registerStage === 1}
-            type="text"
-            placeholder={"First Name"}
-            icon={faUser}
+            config={new StyledInputConfig.Input("text", "First Name", faUser)}
             state={[firstName, setFirstName]}
           />
           <div style={{ width: "50px" }}></div>
           <StyledInput
             visible={registerStage === 1}
-            type="text"
-            placeholder={"Last Name"}
-            icon={faUser}
+            config={new StyledInputConfig.Input("text", "Last Name", faUser)}
             state={[lastName, setLastName]}
           />
         </div>
 
         <StyledInput
           visible={registerStage === 1}
-          type="number"
-          placeholder={"Age"}
-          icon={faCake}
+          config={
+            new StyledInputConfig.Input("number", "Age", faCake, {
+              min: 0,
+              max: 99,
+              value: "",
+            })
+          }
           state={[age, setAge]}
-          inputProps={{ min: 0, max: 99, value: "" }}
         />
 
         <div hidden={!(registerStage === 1)} className={styles.genderContainer}>

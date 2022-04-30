@@ -1,0 +1,17 @@
+.container {
+  height: 100%;
+  position: relative;
+}
+
+.articleBoxesContainer {
+  overflow-y: scroll;
+  position: absolute;
+  inset: 0;
+  top: 30px;
+  margin: 20px 0;
+  height: Calc(100% - 30px - 40px);
+}
+
+.articleBoxesContainer > * {
+  margin: 20px;
+}

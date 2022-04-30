@@ -46,7 +46,7 @@ export const apiLogout = async () => {
   return res.status;
 };
 
-export const apiEdit = async (
+export const apiEditUser = async (
   idToEdit: number,
   propertiesToEdit: Partial<User>,
   _delete: boolean = false
@@ -75,4 +75,35 @@ export const apiGetAllUsers = async () => {
 export const apiCurrentUser = async () => {
   const res = await fetch("/api/users/currentUser", { method: "POST" });
   return res.status === 200 ? ((await res.json()) as User) : null;
+};
+
+export const apiLikeArticle = async (articleId: number, like: boolean) => {
+  const res = await fetch("/api/articles/like", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      articleId,
+      like,
+    }),
+  });
+  return res.status === 200
+    ? ((await res.json()) as { liked: boolean; likes: number })
+    : null;
+};
+
+export const apiAddArticle = async (title: string, content: string) => {
+  const res = await fetch("/api/articles/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title,
+      content,
+    }),
+  });
+
+  return res.status;
 };

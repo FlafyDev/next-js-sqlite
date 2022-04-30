@@ -4,7 +4,7 @@ import _ from "lodash-es";
 import validateUser, { ValidationResult } from "../../../lib/validateUser";
 import User from "../../../models/user";
 
-const registrationKeys = ["username", "password", "email"];
+const registrationKeys = ["username", "password", "email"].sort();
 
 export default withSessionRoute(async (req, res) => {
   if (req.method !== "POST") {
@@ -12,7 +12,7 @@ export default withSessionRoute(async (req, res) => {
     return;
   }
 
-  if (!_.isEqual(Object.keys(req.body), registrationKeys)) {
+  if (!_.isEqual(Object.keys(req.body).sort(), registrationKeys)) {
     res.status(400).send(""); // Bad input
     return;
   }
@@ -28,6 +28,6 @@ export default withSessionRoute(async (req, res) => {
     ...req.body,
     isAdmin: false,
   });
-  
+
   res.status(200).send("");
 });

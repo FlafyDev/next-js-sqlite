@@ -2,7 +2,7 @@ import _ from "lodash";
 import { getArticles, getUsers } from "../../../lib/db";
 import { withSessionRoute } from "../../../lib/withSession";
 
-const articleProperties = ["title", "content"]
+const articleProperties = ["title", "content"].sort();
 
 export default withSessionRoute(async (req, res) => {
   if (req.method !== "POST") {
@@ -10,12 +10,17 @@ export default withSessionRoute(async (req, res) => {
     return;
   }
 
-  if (((await getUsers().where('id', req.session.id).first())?.isAdmin)) {
+  if (
+    !(
+      req.session.id &&
+      (await getUsers().where("id", req.session.id).first())?.isAdmin
+    )
+  ) {
     res.status(401).send("");
     return;
   }
 
-  if (!_.isEqual(Object.keys(req.body), articleProperties)) {
+  if (!_.isEqual(Object.keys(req.body).sort(), articleProperties)) {
     res.status(400).send(""); // Bad input
     return;
   }

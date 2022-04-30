@@ -25,7 +25,17 @@ import moment from "moment";
   });
 
   await getArticles().insert({
-    content: "An article for <b>testing</b>.",
+    content: `
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.
+    An article for <b>testing</b>.`,
     title: "Test Article",
     lastUpdated: moment().subtract(10, "days").valueOf(),
   });

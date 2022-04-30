@@ -19,13 +19,13 @@ const Menu: React.FC<{ user: User }> = (props) => {
     <div className={styles.menu}>
       <MenuItem text={"Home"} link={"/"} />
       {props.user ? (
-        <MenuItem text={"Logout"} action={logout} />
-      ) : (
         <>
-          <MenuItem text={"Login"} link={"/login"} />
-          <MenuItem text={"Articles"} link={"/articles"} />
+          <MenuItem text={"Logout"} action={logout} />
         </>
+      ) : (
+        <MenuItem text={"Login"} link={"/login"} />
       )}
+      <MenuItem text={"Articles"} link={"/articles"} />
       {!props.user?.isAdmin || (
         <MenuItem text={"User Manager"} link={"/userManager"} />
       )}

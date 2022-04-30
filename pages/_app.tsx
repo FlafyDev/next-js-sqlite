@@ -36,6 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             style={{
               position: "relative",
               top: "61px",
+              minHeight: "Calc(100vh - 61px)",
               height: "Calc(100vh - 61px)",
             }}
           >

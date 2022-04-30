@@ -11,17 +11,21 @@ export interface PageProps {
 
 export const genSSP: (
   getProps?: (
-    context: GetServerSidePropsContext
+    context: GetServerSidePropsContext,
+    user: User | null
   ) => Promise<{ [key: string]: any }>
 ) => GetServerSideProps = (getProps) => {
   return withSessionSsr(async (context) => {
+    const user =
+      context.req.session.id === undefined
+        ? null
+        : (await getUsers().where("id", context.req.session.id).first()) ??
+          null;
+
     return {
       props: {
-        user:
-          context.req.session.id === undefined
-            ? null
-            : await getUsers().where("id", context.req.session.id).first(),
-        ...(await getProps?.(context)),
+        user,
+        ...(await getProps?.(context, user)),
       },
     };
   });

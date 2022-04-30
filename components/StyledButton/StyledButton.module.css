@@ -1,0 +1,25 @@
+.btn {
+  border: solid 1px rgb(23, 98, 36);
+  border-radius: 5px;
+  padding: 3px 10px;
+  outline: none;
+  transition: box-shadow 0.1s ease-in-out, top 0.1s ease-in-out,
+    background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  box-shadow: 0;
+  background-color: rgba(77, 60, 172, 0.1);
+  color: rgb(59, 59, 59);
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: rgba(82, 70, 148, 0.171);
+  color: black;
+}
+
+.btn.enabled {
+  border-color: rgb(0, 0, 0);
+  background-color: rgba(112, 93, 220, 0.351);
+  color: rgb(0, 0, 0);
+}
