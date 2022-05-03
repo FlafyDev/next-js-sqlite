@@ -4,7 +4,15 @@ import _ from "lodash-es";
 import validateUser, { ValidationResult } from "../../../lib/validateUser";
 import User from "../../../models/user";
 
-const registrationKeys = ["username", "password", "email"].sort();
+const registrationKeys = [
+  "username",
+  "password",
+  "email",
+  "firstName",
+  "lastName",
+  "age",
+  "gender",
+].sort();
 
 export default withSessionRoute(async (req, res) => {
   if (req.method !== "POST") {
@@ -17,17 +25,41 @@ export default withSessionRoute(async (req, res) => {
     return;
   }
 
-  const validationResult = await validateUser(req.body as User);
+  const requestedUser = req.body as User;
+
+  let validationResult = await validateUser(requestedUser);
+
+  if (validationResult === ValidationResult.None) {
+    if (
+      (
+        await getUsers().whereRaw(
+          "LOWER(username) LIKE ?",
+          `${requestedUser.username.toLowerCase()}`
+        )
+      ).length
+    ) {
+      validationResult = ValidationResult.TakenUsername;
+    } else if (
+      (
+        await getUsers().whereRaw(
+          "LOWER(email) LIKE ?",
+          `${requestedUser.email.toLowerCase()}`
+        )
+      ).length
+    ) {
+      validationResult = ValidationResult.TakenEmail;
+    }
+  }
 
   if (validationResult !== ValidationResult.None) {
-    res.status(400).send(ValidationResult[validationResult]); // Converts the enum to string
+    res.status(400).send(validationResult);
     return;
   }
 
   await getUsers().insert({
-    ...req.body,
+    ...requestedUser,
     isAdmin: false,
   });
 
-  res.status(200).send("");
+  res.status(200).send(validationResult);
 });

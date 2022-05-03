@@ -1,4 +1,5 @@
-import User from "../models/user";
+import User, { Gender } from "../models/user";
+import { ValidationResult } from "./validateUser";
 
 const resultToString = async (res: Response) =>
   res.status === 200 ? "" : (await res.text()) ?? `Error ${res.status}`;
@@ -6,7 +7,11 @@ const resultToString = async (res: Response) =>
 export const apiRegister = async (
   username: string,
   password: string,
-  email: string
+  email: string,
+  firstName: string,
+  lastName: string,
+  age: number,
+  gender: Gender
 ) => {
   const res = await fetch("/api/users/register", {
     method: "POST",
@@ -17,10 +22,14 @@ export const apiRegister = async (
       username,
       password,
       email,
+      firstName,
+      lastName,
+      age,
+      gender,
     }),
   });
 
-  return await resultToString(res);
+  return parseInt(await res.text()) as ValidationResult;
 };
 
 export const apiLogin = async (username: string, password: string) => {

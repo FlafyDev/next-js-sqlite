@@ -1,11 +1,12 @@
 import { Knex, knex } from "knex";
+import path from "path";
 import Article from "../models/article";
 import User from "../models/user";
 
 export const db = knex({
   client: "sqlite3",
   connection: {
-    filename: "./databases/database.db",
+    filename: path.resolve("./databases/database.db"),
   },
 });
 
@@ -22,6 +23,10 @@ export const initializeTables = async () => {
       table.string("username").notNullable();
       table.string("password").notNullable();
       table.string("email").notNullable();
+      table.string("firstName").notNullable();
+      table.string("lastName").notNullable();
+      table.integer("age").defaultTo(1);
+      table.string("gender").defaultTo("other");
       table.integer("points").defaultTo(100);
       table.boolean("isAdmin").defaultTo(false);
     });

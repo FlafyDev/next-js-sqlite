@@ -30,7 +30,7 @@ const Menu: React.FC<{ user: User }> = (props) => {
         <MenuItem text={"User Manager"} link={"/userManager"} />
       )}
       <div className={[styles.menuItem, styles.menuWelcomeText].join(" ")}>
-        {!props.user || `Hello ${props.user.username}!`}
+        {!props.user || `Hello ${props.user.firstName} ${props.user.lastName}!`}
       </div>
       <div className={styles.background}></div>
     </div>

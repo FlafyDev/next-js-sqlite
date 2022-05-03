@@ -7,8 +7,11 @@ import StyledInput, { StyledInputConfig } from "../components/StyledInput";
 import { faUser, faKey, faAt, faCake } from "@fortawesome/free-solid-svg-icons";
 import ProgressBar from "../components/ProgressBar";
 import { AddBackground } from "../hooks/useBackgroundTransitioner";
-import { apiLogin } from "../lib/apiCommunicator";
+import { apiLogin, apiRegister } from "../lib/apiCommunicator";
 import { genSSP, PageProps } from "../lib/genSSP";
+import User, { Gender } from "../models/user";
+import enumToStringArr from "../utils/enumToStringArr";
+import validateUser, { ValidationResult } from "../lib/validateUser";
 
 const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -24,7 +27,6 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const genderNames = ["Male", "Female", "Other"];
   const maxRegisterStages = 2; // zero-index
 
   useEffect(
@@ -50,8 +52,43 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
     if (isRegistering && registerStage < maxRegisterStages) {
       setRegisterStage(registerStage + 1);
       if (registerStage === 1) {
-        setLoading(true);
-        // await register();
+        let validationResult = await validateUser(
+          new User(
+            0,
+            username,
+            password,
+            email,
+            firstName,
+            lastName,
+            age,
+            gender,
+            0,
+            false
+          )
+        );
+
+        if (validationResult) {
+          setError(validationResultToMessage(validationResult));
+        } else {
+          setLoading(true);
+
+          validationResult = await apiRegister(
+            username,
+            password,
+            email,
+            firstName,
+            lastName,
+            age,
+            gender
+          );
+
+          if (validationResult) {
+            setError(validationResultToMessage(validationResult));
+          } else {
+            setError("");
+          }
+        }
+
         setRegisterStage(0);
         setLoading(false);
       }
@@ -77,7 +114,6 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
         setError("Wrong username or password");
         break;
       case 200:
-        // logged.requestCurrentUser();
         router.replace("/");
         break;
       default: {
@@ -86,22 +122,27 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
     }
   };
 
-  const emailRegex = new RegExp(String.raw`^\S+@\S+\.\S+$`);
-  const usernameRegex = new RegExp(String.raw`^[A-Z,a-z]{3,12}$`);
-  const passwordRegex = new RegExp(
-    String.raw`^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$`
-  );
-  const validateData = () => {
-    if (!emailRegex.test(email)) {
-      return "Invalid email.";
+  const validationResultToMessage = (result: ValidationResult) => {
+    switch (result) {
+      case ValidationResult.InvalidUsername:
+        return "Username must contain 3-12 characters and only english letters and numbers.";
+      case ValidationResult.InvalidPassword:
+        return "Password must contain 8-32 characters.";
+      case ValidationResult.InvalidEmail:
+        return "Email must be valid.";
+      case ValidationResult.InvalidFirstOrLastName:
+        return "First and last names must be 2-32 english characters only.";
+      case ValidationResult.BadAge:
+        return "Age must be between 13 to 120.";
+      case ValidationResult.TakenEmail:
+        return "Email is already taken.";
+      case ValidationResult.TakenUsername:
+        return "Username is already taken.";
+      case ValidationResult.None:
+        return "";
+      default:
+        return ValidationResult[result];
     }
-    if (!usernameRegex.test(username)) {
-      return "Username must have 3-12 english characters.";
-    }
-    if (!passwordRegex.test(password)) {
-      return "Password must be 8+ characters and at least 1 english and number characters.";
-    }
-    return "";
   };
 
   // const register = async () => {
@@ -206,7 +247,7 @@ const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
         />
 
         <div hidden={!(registerStage === 1)} className={styles.genderContainer}>
-          {genderNames.map((genderName, i) => (
+          {enumToStringArr(Gender).map((genderName, i) => (
             <div
               className={styles.genderSelector}
               onClick={() => setGender(i)}
