@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Game.module.css";
 import { genSSP, PageProps } from "../lib/genSSP";
-
-enum Piece {
-  none,
-  pown,
-}
+import pieces, { Piece } from "../lib/pieces";
 
 const Game: React.FC<PageProps> = (
   props
@@ -23,7 +19,7 @@ const Game: React.FC<PageProps> = (
     "#5e3a10",
     "#e6b277"
   ];
-  const board: Piece[][] = [
+  const [board, setBoard] = useState<Piece[][]>([
     [1, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 1, 1, 0, 0, 0],
@@ -32,10 +28,22 @@ const Game: React.FC<PageProps> = (
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+  ]);
   const [sizeOfGrid, setSizeOfGrid] = useState(canvasSize / board.length);
   const [holdingPiece, setHolding] = useState<Piece | null>(null);
   const [mousePos, setMousePos] = useState(new Position(0, 0));
+
+  const renderPiece = (piece: Piece, position: Position) => {
+    return  <svg style={{
+      position: "absolute",
+      inset: 0,
+      left: position.x,
+      top: position.y,
+      pointerEvents: "none",
+    }} width={sizeOfGrid} height={sizeOfGrid}>    
+      <image href={pieces.get(piece)?.black} width={sizeOfGrid} height={sizeOfGrid}/>
+    </svg>
+  };
 
   const draw = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, mousePos: Position, isClicking: boolean) => {
     const size = canvas.width; // Square
@@ -61,8 +69,10 @@ const Game: React.FC<PageProps> = (
 
     if (isClicking && mouseInsideCanvas) {
       if (holdingPiece) {
-        board[mouseGridPos.x][mouseGridPos.y] = holdingPiece;
-        setHolding(null);
+        if (board[mouseGridPos.x][mouseGridPos.y] === Piece.none) {
+          board[mouseGridPos.x][mouseGridPos.y] = holdingPiece;
+          setHolding(null);
+        }
       } else {
         if (board[mouseGridPos.x][mouseGridPos.y] != Piece.none) {
           setHolding(board[mouseGridPos.x][mouseGridPos.y]);
@@ -70,15 +80,6 @@ const Game: React.FC<PageProps> = (
         }
       }
     }
-
-    // Draw pieces
-    for (let x = 0; x < board.length; x++) {
-      for (let y = 0; y < board.length; y++) {
-
-        drawPiece(ctx, board[x][y], new Position(x * sizeOfGrid, y * sizeOfGrid));
-      }
-    }
-
   }
 
   // Initialize board
@@ -115,15 +116,14 @@ const Game: React.FC<PageProps> = (
         onMouseMove={(e) => onCanvasMouseMove(_calcMousePos(e))}>
       </canvas>
       {
-        holdingPiece ? <svg style={{
-          position: "absolute",
-          inset: 0,
-          left: mousePos.x,
-          top: mousePos.y,
-          pointerEvents: "none",
-        }}  width={sizeOfGrid} height={sizeOfGrid}>    
-          <image xlinkHref={piecesSvgs[holdingPiece]} width={sizeOfGrid} height={sizeOfGrid}/>
-        </svg> : null
+        holdingPiece ? renderPiece(holdingPiece, mousePos) : null
+      }
+      {
+        board.map((_, x) => {
+          return board[x].map((_, y) => {
+            return renderPiece(board[x][y], new Position(canvas.current.cu x * sizeOfGrid, y * sizeOfGrid));
+          });
+        })
       }
     </div>
   );
@@ -137,24 +137,17 @@ const _calcMousePos = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
   return new Position(e.pageX - e.currentTarget.getBoundingClientRect().left, e.pageY - e.currentTarget.getBoundingClientRect().top);
 }
 
-const drawPiece = (ctx: CanvasRenderingContext2D, piece: Piece, pos: Position) => {
-  switch (piece) {
-    case Piece.none:
-      break;
-    case Piece.pown:
-      ctx.beginPath();
-      ctx.rect(pos.x, pos.y, 16, 16);
-      ctx.fillStyle = "red";
-      ctx.fill();
-      ctx.closePath();
-      break;
-  }
-}
-
-const piecesSvgs: {[piece in Piece]: string} = {
-  [Piece.none]: "",
-  [Piece.pown]: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg",
-}
+const _drawInlineSVG = async (piece: Piece, ctx: CanvasRenderingContext2D) => new Promise<void>((resolve, reject) => {
+  var img = new Image();
+  img.onload = () => {
+    ctx.drawImage(img, 0, 0);
+    resolve();
+  };
+  img.onerror = () => {
+    reject();
+  };
+  img.src = pieces.get(piece)?.black ?? "";
+})
 
 export const getServerSideProps = genSSP();
 export default Game;
