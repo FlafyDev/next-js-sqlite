@@ -1,12 +1,16 @@
 import styles from "../../styles/ArticlePage.module.css";
+import stylesUserCard from "../../components/UserCard/UserCard.module.css";
 import { getArticles } from "../../lib/db";
 import Article from "../../models/article";
 import { genSSP, PageProps } from "../../lib/genSSP";
 import moment from "moment";
 import StyledButton from "../../components/StyledButton";
-import { useEffect, useState } from "react";
-import { apiLikeArticle } from "../../lib/apiCommunicator";
+import { useContext, useEffect, useState } from "react";
+import { apiLikeArticle, apiRemoveArticle } from "../../lib/apiCommunicator";
 import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { OpenPopupContext } from "../../components/Popup/context";
 
 const ArticlePage: React.FC<PageProps & { article?: Article }> = (props) => {
   useEffect(
@@ -16,12 +20,15 @@ const ArticlePage: React.FC<PageProps & { article?: Article }> = (props) => {
       ),
     []
   );
+  const openPopup = useContext(OpenPopupContext);
 
   const likedBy = props.article
     ? (JSON.parse(props.article.likedBy) as number[])
     : [];
 
-  const [liked, setLiked] = useState(likedBy.includes(props.user?.id) ?? false);
+  const [liked, setLiked] = useState(
+    likedBy.includes(props.user?.id ?? -2) ?? false
+  );
   const [likes, setLikes] = useState(likedBy.length);
   const router = useRouter();
 
@@ -44,9 +51,38 @@ const ArticlePage: React.FC<PageProps & { article?: Article }> = (props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{props.article.title}</div>
+      <div className={styles.title}>
+        {props.article.title}
+        <FontAwesomeIcon
+          style={{
+            marginLeft: 10,
+            visibility: props.user?.isAdmin ? "visible" : "hidden",
+          }}
+          onClick={() =>
+            openPopup(
+              <div className={stylesUserCard.popupContainer}>
+                <div className={stylesUserCard.popupTitle}>
+                  {`Are you sure you want to remove the article?`}
+                </div>
+                <button
+                  className={stylesUserCard.sureDeleteButton}
+                  onClick={async () => {
+                    openPopup("");
+                    await apiRemoveArticle(props.article!.id);
+                    await router.replace("/");
+                  }}
+                >
+                  {"Delete"}
+                </button>
+              </div>
+            )
+          }
+          icon={faTrashCan}
+        />
+      </div>
       <div className={styles.date}>
         {moment(props.article.lastUpdated).calendar()}
+
         <StyledButton
           onClick={like}
           enabled={liked}

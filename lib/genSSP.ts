@@ -6,7 +6,7 @@ import { AddBackground } from "../hooks/useBackgroundTransitioner";
 
 export interface PageProps {
   addBackground: AddBackground;
-  user: User;
+  user?: User;
 }
 
 export const genSSP: (

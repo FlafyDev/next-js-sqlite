@@ -1,3 +1,4 @@
+import { omit } from "lodash-es";
 import { getUsers } from "../../../lib/db";
 import { withSessionRoute } from "../../../lib/withSession";
 
@@ -31,10 +32,7 @@ export default withSessionRoute(async (req, res) => {
     await userToModify.delete();
   } else {
     await userToModify.update({
-      username: req.body?.username,
-      password: req.body?.password,
-      email: req.body?.email,
-      isAdmin: req.body?.isAdmin,
+      ...omit(req.body, ["id", "delete"]),
     });
   }
 

@@ -60,7 +60,7 @@ export const apiEditUser = async (
   propertiesToEdit: Partial<User>,
   _delete: boolean = false
 ) => {
-  const res = await fetch("/api/users/login", {
+  const res = await fetch("/api/users/edit", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -111,6 +111,20 @@ export const apiAddArticle = async (title: string, content: string) => {
     body: JSON.stringify({
       title,
       content,
+    }),
+  });
+
+  return res.status;
+};
+
+export const apiRemoveArticle = async (id: number) => {
+  const res = await fetch("/api/articles/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id,
     }),
   });
 

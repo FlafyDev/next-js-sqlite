@@ -13,7 +13,7 @@ import User, { Gender } from "../models/user";
 import enumToStringArr from "../utils/enumToStringArr";
 import validateUser, { ValidationResult } from "../lib/validateUser";
 
-const Login: React.FC<{ addBackground: AddBackground }> = (props) => {
+const Login: React.FC<PageProps> = (props) => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
