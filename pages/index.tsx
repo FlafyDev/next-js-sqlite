@@ -2,11 +2,9 @@
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import { AddBackground } from "../hooks/useBackgroundTransitioner";
-import User from "../models/user";
 import { genSSP, PageProps } from "../lib/genSSP";
 
-const Home: React.FC<{ addBackground: AddBackground; user: User }> = (
+const Home: React.FC<PageProps> = (
   props
 ) => {
   useEffect(
