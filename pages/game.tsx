@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Game.module.css";
 import { genSSP, PageProps } from "../lib/genSSP";
-import pieces, { Piece } from "../lib/pieces";
+import pieces, { Piece } from "../lib/chess/pieces";
+import { chessBoardGenerator, ColoredPiece, piecesOriginalSorting } from "../lib/chess/chessBoard";
+import { isEqual } from "lodash-es";
 
 const Game: React.FC<PageProps> = (
   props
@@ -19,29 +21,32 @@ const Game: React.FC<PageProps> = (
     "#5e3a10",
     "#e6b277"
   ];
-  const [board, setBoard] = useState<Piece[][]>([
-    [1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-  ]);
+  const [board, setBoard] = useState<ColoredPiece[][]>(chessBoardGenerator());
   const [sizeOfGrid, setSizeOfGrid] = useState(canvasSize / board.length);
-  const [holdingPiece, setHolding] = useState<Piece | null>(null);
+  const [holdingPiece, setHolding] = useState<ColoredPiece>(new ColoredPiece(Piece.none, "white"));
   const [mousePos, setMousePos] = useState(new Position(0, 0));
 
-  const renderPiece = (piece: Piece, position: Position) => {
-    return  <svg style={{
+  const checkWin = () => {
+    // console.log(isEqual(board[board.length-2], piecesOriginalSorting.bottom[0].map((piece) => new ColoredPiece(piece, "white"))));
+    console.log(board[board.length-2]);
+    console.log(piecesOriginalSorting.bottom[0].map((piece) => new ColoredPiece(piece, "white")));
+
+    return isEqual(board[0], piecesOriginalSorting.top[0].map((piece) => new ColoredPiece(piece, "black"))) &&
+    isEqual(board[1], piecesOriginalSorting.top[1].map((piece) => new ColoredPiece(piece, "black"))) &&
+    isEqual(board[board.length-2], piecesOriginalSorting.bottom[0].map((piece) => new ColoredPiece(piece, "white"))) &&
+    isEqual(board[board.length-1], piecesOriginalSorting.bottom[1].map((piece) => new ColoredPiece(piece, "white")));
+  };
+
+  const renderPiece = (piece: ColoredPiece, position: Position, zIndex: number = 0) => {
+    return piece.piece === Piece.none ? null : <svg style={{
+      zIndex,
       position: "absolute",
       inset: 0,
       left: position.x,
       top: position.y,
       pointerEvents: "none",
     }} width={sizeOfGrid} height={sizeOfGrid}>    
-      <image href={pieces.get(piece)?.black} width={sizeOfGrid} height={sizeOfGrid}/>
+      <image href={pieces.get(piece.piece)?.[piece.color].htmlData} width={sizeOfGrid} height={sizeOfGrid}/>
     </svg>
   };
 
@@ -68,17 +73,16 @@ const Game: React.FC<PageProps> = (
     }
 
     if (isClicking && mouseInsideCanvas) {
-      if (holdingPiece) {
-        if (board[mouseGridPos.x][mouseGridPos.y] === Piece.none) {
-          board[mouseGridPos.x][mouseGridPos.y] = holdingPiece;
-          setHolding(null);
-        }
+      const currentPiece = board[mouseGridPos.x][mouseGridPos.y];
+      if (holdingPiece.piece === Piece.none) {
+        setHolding(currentPiece);
+        board[mouseGridPos.x][mouseGridPos.y] = holdingPiece;
       } else {
-        if (board[mouseGridPos.x][mouseGridPos.y] != Piece.none) {
-          setHolding(board[mouseGridPos.x][mouseGridPos.y]);
-          board[mouseGridPos.x][mouseGridPos.y] = Piece.none;
-        }
+        board[mouseGridPos.x][mouseGridPos.y] = holdingPiece;
+        setHolding(currentPiece);
       }
+
+      console.log(checkWin());
     }
   }
 
@@ -104,7 +108,6 @@ const Game: React.FC<PageProps> = (
       return;
     }
     
-    console.log(canvas.current.clientLeft);
     setMousePos(new Position(position.x + canvas.current.offsetLeft - sizeOfGrid/2, position.y + canvas.current.offsetTop - sizeOfGrid/2));
     draw(canvas.current.getContext("2d")!, canvas.current, position, false);
   }
@@ -116,14 +119,15 @@ const Game: React.FC<PageProps> = (
         onMouseMove={(e) => onCanvasMouseMove(_calcMousePos(e))}>
       </canvas>
       {
-        holdingPiece ? renderPiece(holdingPiece, mousePos) : null
+        holdingPiece ? renderPiece(holdingPiece, mousePos, 100) : null
       }
       {
+        canvas.current ?
         board.map((_, x) => {
           return board[x].map((_, y) => {
-            return renderPiece(board[x][y], new Position(canvas.current.cu x * sizeOfGrid, y * sizeOfGrid));
+            return renderPiece(board[x][y], new Position(canvas.current!.offsetLeft + x * sizeOfGrid - 1, canvas.current!.offsetTop + y * sizeOfGrid - 1));
           });
-        })
+        }) : null
       }
     </div>
   );
@@ -146,7 +150,7 @@ const _drawInlineSVG = async (piece: Piece, ctx: CanvasRenderingContext2D) => ne
   img.onerror = () => {
     reject();
   };
-  img.src = pieces.get(piece)?.black ?? "";
+  img.src = pieces.get(piece)?.black?.htmlData ?? "";
 })
 
 export const getServerSideProps = genSSP();
