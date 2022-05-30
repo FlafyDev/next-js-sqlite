@@ -3,7 +3,7 @@ import shuffleArray from "../../utils/shuffleArray";
 import { Piece } from "./pieces";
 
 export class ColoredPiece {
-  constructor(public piece: Piece, public color: "white" | "black") {};
+  constructor(public piece: Piece, public color: "white" | "black") {}
 }
 
 export const piecesOriginalSorting: { top: Piece[][]; bottom: Piece[][] } = {
@@ -50,8 +50,13 @@ export const chessBoardGenerator = () => {
   }
 
   const piecesToPlace = piecesOriginalSorting.top
-    .flat().map((piece) => new ColoredPiece(piece, "white") )
-    .concat(piecesOriginalSorting.bottom.flat().map((piece) => new ColoredPiece(piece, "black") ));
+    .flat()
+    .map((piece) => new ColoredPiece(piece, "white"))
+    .concat(
+      piecesOriginalSorting.bottom
+        .flat()
+        .map((piece) => new ColoredPiece(piece, "black"))
+    );
   shuffleArray(piecesToPlace);
   piecesToPlace.forEach((piece) => {
     while (true) {
@@ -62,7 +67,7 @@ export const chessBoardGenerator = () => {
         board[x][y] = piece;
         break;
       }
-    };
+    }
   });
 
   return board;

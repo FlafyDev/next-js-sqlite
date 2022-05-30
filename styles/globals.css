@@ -1,11 +1,11 @@
 body {
-  font-family: "Fira Sans";
+  font-family: "Arial";
   padding: 0;
   margin: 0;
   overflow: hidden;
 }
 
-@font-face {
+/* @font-face {
   font-family: "Quartzo";
   font-weight: bold;
   src: url("/QuartzoBold-W9lv.ttf") format("truetype");
@@ -14,7 +14,7 @@ body {
 @font-face {
   font-family: "Freshman";
   src: url("/Freshman-POdx.ttf") format("truetype");
-}
+} */
 
 ::-webkit-scrollbar {
   width: 5px; /* Remove scrollbar space */

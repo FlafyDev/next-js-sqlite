@@ -130,3 +130,20 @@ export const apiRemoveArticle = async (id: number) => {
 
   return res.status;
 };
+
+export const apiGameReward = async (hints: number, switches: number) => {
+  const res = await fetch("/api/gameReward", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      hints,
+      switches,
+    }),
+  });
+
+  return res.status === 200
+    ? ((await res.json()) as { currentPoints: number; pointsReceived: number })
+    : null;
+};

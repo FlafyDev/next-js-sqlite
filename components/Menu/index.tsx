@@ -21,6 +21,7 @@ const Menu: React.FC<{ user: User }> = (props) => {
       {props.user ? (
         <>
           <MenuItem text={"Logout"} action={logout} />
+          <MenuItem text={"Game"} link={"/game"} />
         </>
       ) : (
         <MenuItem text={"Login"} link={"/login"} />
