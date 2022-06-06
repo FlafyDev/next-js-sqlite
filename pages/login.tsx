@@ -63,6 +63,7 @@ const Login: React.FC<PageProps> = (props) => {
             age,
             gender,
             0,
+            0,
             false
           )
         );

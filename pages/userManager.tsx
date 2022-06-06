@@ -19,52 +19,34 @@ const UserManager: React.FC<PageProps & { users: User[] }> = (props) => {
     []
   );
 
-  const [filteredUsersIndex, setFilteredUsersIndex] = useState<number[]>([]);
+  const [filteredUserIndexes, setFilteredUserIndexes] = useState<number[]>([]);
+  const [deletedUserIndexes, setDeletedUserIndexes] = useState<number[]>([]);
   // const [users, setUsers] = useState([]);
   // const [error, setError] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // useEffect(() => {
-  // 	if (logged.info.isAdmin) {
-  // 		const res = await fetch('api/Users/GetUsers');
-
-  // 		switch (res.status) {
-  // 			case 200: {
-  // 				setUsers(await res.json());
-  // 				setError(``);
-  // 				break;
-  // 			}
-  // 			case 401: {
-  // 				setError(`You're Unauthorized to view this page`);
-  // 				setUsers([]);
-  // 				break;
-  // 			}
-  // 			default: {
-  // 				setError(`${res.status} error`);
-  // 				setUsers([]);
-  // 			}
-  // 		}
-  // 	} else {
-  // 		setError(`You're Unauthorized to view this page`);
-  // 		setUsers([]);
-  // 	}
-  // }, [logged]);
-
   useEffect(() => {
-    setFilteredUsersIndex(
+    setFilteredUserIndexes(
       props.users
         .map((_, i) => i)
         .filter((userIndex) => {
           const user = props.users[userIndex];
-          return Object.values(user).some((value) => {
-            return value
-              .toString()
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase());
-          });
+          console.log(
+            `${userIndex} ${!deletedUserIndexes.includes(userIndex)}`
+          );
+
+          return (
+            !deletedUserIndexes.includes(userIndex) &&
+            Object.values(user).some((value) => {
+              return value
+                .toString()
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
+            })
+          );
         })
     );
-  }, [searchQuery]);
+  }, [searchQuery, deletedUserIndexes]);
 
   return (
     <div className={styles.container}>
@@ -83,7 +65,12 @@ const UserManager: React.FC<PageProps & { users: User[] }> = (props) => {
                 canDelete={user.id !== props.user?.id}
                 user={user}
                 key={i}
-                // visible={filteredUsersIndex.includes(i)}
+                visible={filteredUserIndexes.includes(i)}
+                onDeleted={() => {
+                  const temp = [...deletedUserIndexes];
+                  temp.push(i);
+                  setDeletedUserIndexes(temp);
+                }}
               />
             ) : null;
           })}
@@ -93,7 +80,19 @@ const UserManager: React.FC<PageProps & { users: User[] }> = (props) => {
   );
 };
 
-export const getServerSideProps = genSSP(async (_) => ({
-  users: await getUsers(),
-}));
+export const getServerSideProps = genSSP(async (context) => {
+  const users = await getUsers();
+
+  console.log(context.req.session.id);
+
+  if (users.find((user) => user.id === context.req.session.id)?.isAdmin) {
+    return {
+      users,
+    };
+  }
+
+  return {
+    users: [],
+  };
+});
 export default UserManager;

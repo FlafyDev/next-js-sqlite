@@ -7,6 +7,7 @@
 }
 
 .title {
+  margin: 128px;
   position: relative;
   font-size: 120px;
   font-family: "Quartzo";

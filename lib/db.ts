@@ -28,6 +28,7 @@ export const initializeTables = async () => {
       table.integer("age").defaultTo(1);
       table.string("gender").defaultTo("other");
       table.integer("points").defaultTo(100);
+      table.integer("leastSwitches").defaultTo(-1);
       table.boolean("isAdmin").defaultTo(false);
     });
   }

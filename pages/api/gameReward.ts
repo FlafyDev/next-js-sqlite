@@ -33,7 +33,13 @@ export default withSessionRoute(async (req, res) => {
     ) || 100;
   pointsReceived = pointsReceived > 0 ? pointsReceived : 0;
 
-  await userSQL.update({ points: user.points + pointsReceived });
+  await userSQL.update({
+    points: user.points + pointsReceived,
+    leastSwitches:
+      user.leastSwitches > switchesDone || user.leastSwitches === -1
+        ? switchesDone
+        : user.leastSwitches,
+  });
 
   res.status(200).send(
     JSON.stringify({

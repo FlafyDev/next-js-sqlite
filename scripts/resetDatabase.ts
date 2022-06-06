@@ -18,10 +18,11 @@ import { Gender } from "../models/user";
     username: "Admin",
     password: "AdminAdmin",
     email: "Admin@gmail.com",
-    firstName: "Mr.",
+    firstName: "Mr",
     lastName: "Admin",
     age: 20,
     gender: Gender.Male,
+    leastSwitches: 113,
     isAdmin: true,
   });
 
@@ -29,10 +30,11 @@ import { Gender } from "../models/user";
     username: "User",
     password: "UserUser",
     email: "User@gmail.com",
-    firstName: "Mr.",
+    firstName: "Mr",
     lastName: "User",
     age: 18,
     gender: Gender.Male,
+    leastSwitches: 102,
     isAdmin: false,
   });
 

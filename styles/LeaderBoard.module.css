@@ -1,0 +1,14 @@
+.container {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.text {
+  color: black;
+  margin: 40px;
+  font-size: 24px;
+  font-weight: bold;
+}

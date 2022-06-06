@@ -11,10 +11,11 @@ import { apiEditUser } from "../../lib/apiCommunicator";
 const UserCard: React.FC<{
   user: User;
   canDelete: boolean;
+  visible: boolean;
+  onDeleted: () => void;
 }> = (props) => {
   const [user, setUser] = useState(props.user);
   const openPopup = useContext(OpenPopupContext);
-  const [visible, setVisible] = useState(true);
   const didMount = useRef(false);
 
   useEffect(() => {
@@ -24,18 +25,17 @@ const UserCard: React.FC<{
 
   const updateUser = async () => {
     await apiEditUser(user.id, user);
-    console.log("A");
   };
 
   const deleteUser = async () => {
     openPopup("");
-    setVisible(false);
     await apiEditUser(user.id, {}, true);
+    props.onDeleted();
   };
 
   return (
     <div>
-      <div className={styles.container} hidden={!visible}>
+      <div className={styles.container} hidden={!props.visible}>
         <div className={styles.gridContainer}>
           <Field
             objectKey={"email"}
@@ -77,6 +77,12 @@ const UserCard: React.FC<{
           <Field
             objectKey={"points"}
             displayName={"Points"}
+            state={[user, setUser]}
+            type={"number"}
+          />
+          <Field
+            objectKey={"leastSwitches"}
+            displayName={"Least Switches"}
             state={[user, setUser]}
             type={"number"}
           />

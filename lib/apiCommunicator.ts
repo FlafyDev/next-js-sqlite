@@ -1,3 +1,4 @@
+import LeaderBoardEntry from "../models/leaderBoardEntry";
 import User, { Gender } from "../models/user";
 import { ValidationResult } from "./validateUser";
 

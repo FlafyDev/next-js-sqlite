@@ -15,6 +15,7 @@ export default class User {
     public age: number,
     public gender: Gender,
     public points: number,
+    public leastSwitches: number,
     public isAdmin: boolean
   ) {}
 }

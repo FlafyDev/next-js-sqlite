@@ -18,6 +18,7 @@ const Menu: React.FC<{ user: User }> = (props) => {
   return (
     <div className={styles.menu}>
       <MenuItem text={"Home"} link={"/"} />
+      <MenuItem text={"LeaderBoard"} link={"/leaderBoard"} />
       {props.user ? (
         <>
           <MenuItem text={"Logout"} action={logout} />
