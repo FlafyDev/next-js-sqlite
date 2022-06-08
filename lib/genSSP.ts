@@ -13,7 +13,7 @@ export const genSSP: (
   getProps?: (
     context: GetServerSidePropsContext,
     user: User | null
-  ) => Promise<{ [key: string]: any }>
+  ) => Promise<{ [key: string]: any } | string>
 ) => GetServerSideProps = (getProps) => {
   return withSessionSsr(async (context) => {
     const user =
@@ -22,10 +22,21 @@ export const genSSP: (
         : (await getUsers().where("id", context.req.session.id).first()) ??
           null;
 
+    const props = await getProps?.(context, user);
+
+    if (typeof props === "string") {
+      return {
+        redirect: {
+          destination: props,
+        },
+        props: {},
+      };
+    }
+
     return {
       props: {
         user,
-        ...(await getProps?.(context, user)),
+        ...props,
       },
     };
   });

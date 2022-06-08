@@ -19,7 +19,7 @@ const Home: React.FC<
   return (
     <div>
       <div className={styles.topSection}>
-        <div className={styles.title}>{"Mr. Chess"}</div>
+        <div className={styles.title}>{"Chess Site"}</div>
         <div>
           {`${props.usersVisited} users visited in the last ${
             props.resetFrequencyMS / 1000 / 60

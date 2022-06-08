@@ -80,19 +80,14 @@ const UserManager: React.FC<PageProps & { users: User[] }> = (props) => {
   );
 };
 
-export const getServerSideProps = genSSP(async (context) => {
-  const users = await getUsers();
-
-  console.log(context.req.session.id);
-
-  if (users.find((user) => user.id === context.req.session.id)?.isAdmin) {
-    return {
-      users,
-    };
+export const getServerSideProps = genSSP(async (context, user) => {
+  if (!user?.isAdmin) {
+    return "/";
   }
 
   return {
-    users: [],
+    users: await getUsers(),
   };
 });
+
 export default UserManager;

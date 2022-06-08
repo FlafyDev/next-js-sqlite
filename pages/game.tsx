@@ -9,6 +9,7 @@ import {
 } from "../lib/chess/chessBoard";
 import { isEqual } from "lodash-es";
 import { apiGameReward } from "../lib/apiCommunicator";
+import { getUsers } from "../lib/db";
 
 const Game: React.FC<PageProps> = (props) => {
   useEffect(
@@ -279,5 +280,11 @@ const _drawInlineSVG = async (piece: Piece, ctx: CanvasRenderingContext2D) =>
     img.src = pieces.get(piece)?.black?.htmlData ?? "";
   });
 
-export const getServerSideProps = genSSP();
+export const getServerSideProps = genSSP(async (context, user) => {
+  if (user) {
+    return {};
+  }
+
+  return "/";
+});
 export default Game;
