@@ -27,7 +27,7 @@ export default withSessionRoute(async (req, res) => {
 
   const requestedUser = req.body as User;
 
-  let validationResult = await validateUser(requestedUser);
+  let validationResult = validateUser(requestedUser);
 
   if (validationResult === ValidationResult.None) {
     if (

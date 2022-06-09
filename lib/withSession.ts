@@ -19,6 +19,7 @@ const sessionOptions = {
       throw "No cookie secret";
     })(),
   cookieOptions: {
+    maxAge: 600, // Reset after 600 seconds.
     secure: process.env.NODE_ENV === "production",
   },
 };

@@ -1,5 +1,5 @@
 import { omit } from "lodash-es";
-import { getUsers } from "../../../lib/db";
+import { getArticles, getUsers } from "../../../lib/db";
 import { withSessionRoute } from "../../../lib/withSession";
 
 export default withSessionRoute(async (req, res) => {
@@ -29,6 +29,21 @@ export default withSessionRoute(async (req, res) => {
   const userToModify = getUsers().where("id", userIdToModify);
 
   if (deleteUser) {
+    // Remove likes the user did on articles.
+    let articles = await getArticles();
+    articles = articles.filter((article) =>
+      new RegExp(`\\D+${userIdToModify}\\D+`).test(article.likedBy)
+    );
+    for (const article of articles) {
+      let likedBy = JSON.parse(article.likedBy) as number[];
+      likedBy = likedBy.filter((id) => id !== userIdToModify);
+      await getArticles()
+        .where("id", article.id)
+        .first()
+        .update("likedBy", JSON.stringify(likedBy));
+    }
+
+    // Remove the user.
     await userToModify.delete();
   } else {
     await userToModify.update({

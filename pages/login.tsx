@@ -52,7 +52,7 @@ const Login: React.FC<PageProps> = (props) => {
     if (isRegistering && registerStage < maxRegisterStages) {
       setRegisterStage(registerStage + 1);
       if (registerStage === 1) {
-        let validationResult = await validateUser(
+        let validationResult = validateUser(
           new User(
             0,
             username,
@@ -145,52 +145,6 @@ const Login: React.FC<PageProps> = (props) => {
         return ValidationResult[result];
     }
   };
-
-  // const register = async () => {
-  //   const dataError = validateData();
-  //   if (dataError) {
-  //     setError(dataError);
-  //     return;
-  //   }
-
-  //   const startTime = new Date();
-  //   const res = await fetch("api/Users/Register", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json charset=utf-8",
-  //     },
-  //     body: JSON.stringify({
-  //       username: username,
-  //       email: email,
-  //       password: password,
-  //       firstName: firstName,
-  //       lastName: lastName,
-  //       age: age,
-  //       gender: gender,
-  //     }),
-  //   });
-  //   const endTime = new Date();
-  //   const timeToWait = 500 - (endTime - startTime);
-
-  //   if (timeToWait > 0) {
-  //     await new Promise((resolve) => setTimeout(resolve, timeToWait));
-  //   }
-
-  //   switch (res.status) {
-  //     case 400: {
-  //       setError(await res.text());
-  //       break;
-  //     }
-  //     case 200: {
-  //       setIsRegistering(false);
-  //       setError(``);
-  //       break;
-  //     }
-  //     default: {
-  //       setError(`${res.status} error.`);
-  //     }
-  //   }
-  // };
 
   return (
     <div className={[styles.container, !loading || styles.loading].join(" ")}>

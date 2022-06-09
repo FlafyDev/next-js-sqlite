@@ -26,7 +26,7 @@ export const validateName = (name?: string) =>
 
 export const validateAge = (age?: number) => age && age > 13 && age < 120;
 
-const validateUser = async (user: User) => {
+const validateUser = (user: User) => {
   if (!validatePassword(user.password)) {
     return ValidationResult.InvalidPassword;
   }

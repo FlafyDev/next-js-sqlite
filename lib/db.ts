@@ -1,6 +1,7 @@
 import { Knex, knex } from "knex";
 import path from "path";
 import Article from "../models/article";
+import LoginHistoryEntry from "../models/loginHistoryEntry";
 import User from "../models/user";
 
 export const db = knex({
@@ -13,6 +14,10 @@ export const db = knex({
 export const getUsers = (): Knex.QueryBuilder<User, User[]> => db("users");
 export const getArticles = (): Knex.QueryBuilder<Article, Article[]> =>
   db("articles");
+export const getLoginHistory = (): Knex.QueryBuilder<
+  LoginHistoryEntry,
+  LoginHistoryEntry[]
+> => db("loginHistory");
 
 export const initializeTables = async () => {
   if (!(await db.schema.hasTable("users"))) {
@@ -40,8 +45,19 @@ export const initializeTables = async () => {
       });
       table.string("title").notNullable();
       table.string("content").notNullable();
-      table.string("likedBy").defaultTo("[]"); // JSON.stringify
+      table.string("likedBy").defaultTo("[]"); // JSON.stringify as number[]
       table.integer("lastUpdated").notNullable();
+    });
+  }
+
+  if (!(await db.schema.hasTable("loginHistory"))) {
+    await db.schema.createTable("loginHistory", (table) => {
+      table.increments("id", {
+        primaryKey: true,
+      });
+      table.string("username").notNullable();
+      table.bigInteger("date").notNullable();
+      table.boolean("successful").notNullable();
     });
   }
 };
