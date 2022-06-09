@@ -11,7 +11,10 @@ import { apiLogin, apiRegister } from "../lib/apiCommunicator";
 import { genSSP, PageProps } from "../lib/genSSP";
 import User, { Gender } from "../models/user";
 import enumToStringArr from "../utils/enumToStringArr";
-import validateUser, { ValidationResult } from "../lib/validateUser";
+import validateUser, {
+  validateUsername,
+  ValidationResult,
+} from "../lib/validateUser";
 
 const Login: React.FC<PageProps> = (props) => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -95,7 +98,15 @@ const Login: React.FC<PageProps> = (props) => {
       }
     } else {
       setLoading(true);
-      await login();
+      setError("");
+
+      if (!validateUsername(username)) {
+        setError(validationResultToMessage(ValidationResult.InvalidUsername));
+        setRegisterStage(0);
+      } else {
+        await login();
+      }
+
       setLoading(false);
     }
   };
