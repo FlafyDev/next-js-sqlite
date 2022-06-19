@@ -60,6 +60,6 @@ Generates 2 users by default:
 ]
 ```
 
-### License
+## License
 
 MIT
