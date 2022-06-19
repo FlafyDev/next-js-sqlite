@@ -47,7 +47,7 @@ npm run reset-database
 
 Generates 2 users by default:
 
-```JSON
+```
 [
   {
     Username: "User",
