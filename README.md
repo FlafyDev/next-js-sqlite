@@ -3,7 +3,7 @@
 Website made with Next JS with SQLite for a school project.  
 repo: https://github.com/FlafyDev/next-js-sqlite
 
-## Running
+## Usage
 
 ### Prerequisites
 
